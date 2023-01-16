@@ -11,16 +11,16 @@ import {
 } from "./styles"
 
 interface Category {
-  name: String;
-  icon: String;
+  name: string;
+  icon: string;
 }
 
 export interface TransactionCardProps {
   type: 'positive' | 'negative'
-  title: String;
-  amount: String;
+  title: string;
+  amount: string;
   category: Category;
-  date: String;
+  date: string;
 }
 
 interface Props {

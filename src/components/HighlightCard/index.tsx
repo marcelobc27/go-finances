@@ -9,9 +9,9 @@ import {
  } from "./styles";
 
  interface Props {
-  title: String;
-  amount: String;
-  lastTransaction: String;
+  title: string;
+  amount: string;
+  lastTransaction: string;
   type: 'up' | 'down' | 'total'
  }
 
