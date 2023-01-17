@@ -2,6 +2,9 @@ import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
 import { Feather } from '@expo/vector-icons'
 
+// import { GestureHandlerRootView} from 'react-native-gesture-handler'
+ 
+
 export const Container = styled.View`
   flex: 1;
   background-color: ${({theme}) => theme.colors.background};
@@ -36,7 +39,7 @@ export const Icon = styled(Feather)`
  margin-right: 16px;
 `
 
-export const Name = styled.View`
+export const Name = styled.Text`
   font-family: ${({theme}) => theme.fonts.regular};
   font-size: ${RFValue(14)}px;
 `
