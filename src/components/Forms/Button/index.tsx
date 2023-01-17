@@ -8,7 +8,7 @@ interface Props extends TouchableOpacityProps{
 const Button = ({title, ...rest} : Props) => {
   return(
     <Container>
-      <Title>Teste</Title>
+      <Title>{title}</Title>
     </Container>
   )
 }
