@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
+import { ActivityIndicator} from 'react-native'
 import { useCallback, useEffect, useState } from "react";
 import { RFValue } from "react-native-responsive-fontsize";
 import HighlightCard from "../../components/HighlightCard";
@@ -25,20 +26,50 @@ export interface DataListProps extends TransactionCardProps {
   id: string
 }
 
-const Dashboard = () => {
-  const [data, setData] = useState<DataListProps[]>()
+// interface HighlightedDataProps {
+//   total: string
+// }
 
+const highlightedDataInitialState = {
+  incomes: {
+    amount: '0',
+  },
+  expenses: {
+    amount: '0',
+  },
+  total: {
+    amount: '0'
+  }
+}
+
+const Dashboard = () => {
+  const [transactions, setTransactions] = useState<DataListProps[]>()
+  const [highlightedData, setHighlightedData] = useState(highlightedDataInitialState)
+  
   async function loadTransactions(){
     const datakey = '@gofinances:transactions';
     const response = await AsyncStorage.getItem(datakey);
     const transactions = response ? JSON.parse(response) : []
+    
+    let incomesTotal = 0;
+    let expensesTotal = 0;
 
     const formattedtransactions: DataListProps[] = transactions
       .map((item: DataListProps) => {
+        if(item.type === 'positive'){
+          incomesTotal += Number(item.amount)
+          console.log("incomesTotal", incomesTotal)
+        } else {
+          expensesTotal += Number(item.amount)
+          console.log("expensesTotal", expensesTotal)
+        }
+
         const amount = Number(item.amount).toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL'
         });
+
+        console.log(amount)
 
         const date = Intl.DateTimeFormat('pt-BR', {
           day: '2-digit',
@@ -48,7 +79,7 @@ const Dashboard = () => {
 
         return{
           id: item.id,
-          name : item.name,
+          name: item.name,
           amount,
           type: item.type,
           category: item.category,
@@ -56,7 +87,33 @@ const Dashboard = () => {
         }
       })
 
-    setData(formattedtransactions)
+    setTransactions(formattedtransactions)
+    console.log("incomes after map", incomesTotal)
+    console.log("expenses after map", expensesTotal)
+
+    const total = incomesTotal - expensesTotal
+
+    setHighlightedData({
+      incomes: {
+        amount: incomesTotal.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL'
+        })
+      },
+      expenses: {
+        amount: expensesTotal.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL'
+        })
+      },
+      total: {
+        amount: total.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL'
+        })
+      }
+    })
+    console.log(highlightedData)
   }
 
   useEffect(() => {
@@ -92,19 +149,19 @@ const Dashboard = () => {
         <HighlightCard
           type="up"
           title="Entradas"
-          amount="R$ 17.400,00"
+          amount={highlightedData.incomes.amount}
           lastTransaction="Última entrada dia 13 de abril"
         />
         <HighlightCard
           type="down"
           title="Saídas"
-          amount="R$ 1.259,00"
+          amount={highlightedData.expenses.amount}
           lastTransaction="Última saída dia 03 de abril"
         />
         <HighlightCard
           type="total"
           title="Entradas"
-          amount="R$ 16.141,00"
+          amount={highlightedData.total.amount}
           lastTransaction="01 à 16 de abril"
         />
       </HighlightCards>
@@ -112,7 +169,7 @@ const Dashboard = () => {
       <Transactions>
         <Title>Listagem</Title>
         <TransactionList
-          data={data}
+          data={transactions}
           keyExtractor={item => item.id}
           renderItem={({item}) => <TransactionCard data={item}/>}
         />

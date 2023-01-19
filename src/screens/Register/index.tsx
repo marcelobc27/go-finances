@@ -83,6 +83,22 @@ const Register = () => {
     }
   }
 
+  // useEffect(() => {
+  //   // async function loadData(){
+  //   //   const data = await AsyncStorage.getItem(datakey)
+  //   //   console.log("loadData function ", JSON.parse(data))
+  //   // }
+
+  //   // loadData();
+
+  //   // async function removeAll() {
+  //   //   const datakey = '@gofinances:transactions';
+  //   //   await AsyncStorage.removeItem(datakey)
+  //   // }
+
+  //   // removeAll()
+  // }, [])
+
   return (
     <Container>
       <Header>
