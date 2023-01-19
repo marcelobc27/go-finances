@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import Button from "../../components/Forms/Button";
 import { Button } from "react-native";
 import Input from "../../components/Forms/Input";
@@ -7,6 +7,9 @@ import CategorySelectButton from "../../components/Forms/CategorySelectButton";
 import CategorySelect from "../CategorySelect";
 import { Container, Title, Header, Form, Fields, TransactionTypes } from "./styles";
 import { Modal } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import uuid from 'react-native-uuid'
+import { useNavigation } from "@react-navigation/native";
 
 const Register = () => {
   const [transactionType, setTransactionType] = useState('')
@@ -15,11 +18,13 @@ const Register = () => {
     key: "category",
     name: "Categoria",
   })
+  
+  const navigation = useNavigation()
 
   const [name, setName] = useState('')
   const [amount, setAmount] = useState('')
 
-  function handleTransactionsTypeSelect (type: 'up' | 'down'){
+  function handleTransactionsTypeSelect (type: 'positive' | 'negative'){
     setTransactionType(type);
   }
 
@@ -31,7 +36,7 @@ const Register = () => {
     setCategoryModalOpen(false)
   }
 
-  function handleRegister(){
+  async function handleRegister(){
     if(!transactionType){
       return console.log("Selecione o tipo de transição")
     }
@@ -40,14 +45,42 @@ const Register = () => {
       return console.log("Selecione a categoria")
     }
 
-    const data = {
+    const newTransaction = {
+      id: String(uuid.v4()),
       name: name,
       amount: amount,
-      transactionType: transactionType,
-      category: category.key
+      type: transactionType,
+      category: category.key,
+      date: new Date()
     }
 
-    console.log(data)
+    try {
+      const datakey = '@gofinances:transactions';
+      const data = await AsyncStorage.getItem(datakey)
+      console.log("data", data)
+      const currentData = data ? JSON.parse(data) : []
+      console.log("currentdata", currentData)
+
+      const formattedData = [
+        ...currentData,
+        newTransaction
+      ]
+
+      await AsyncStorage.setItem(datakey, JSON.stringify(formattedData));
+
+      setTransactionType('')
+      setCategory({
+        key: 'category',
+        name: 'Categoria'
+      })
+      setName('')
+      setAmount('')
+
+      navigation.navigate("Listagem");
+
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -63,26 +96,27 @@ const Register = () => {
             onChangeText={text => setName(text)}
             autoCapitalize="sentences"
             autoCorrect={false}
+            clearTextOnFocus={true}
           />
 
           <Input
             placeholder="Preço" 
             onChangeText={text => setAmount(text)}
             keyboardType="numeric"
+            clearTextOnFocus={true}
           />
-            {console.log(name, amount)}
           <TransactionTypes>
           <TransactionTypeButton
             title="Income"
             type="up"
-            onPress={() => handleTransactionsTypeSelect('up')}
-            isActive={transactionType === 'up'}
+            onPress={() => handleTransactionsTypeSelect('positive')}
+            isActive={transactionType === 'positive'}
           />
           <TransactionTypeButton
             title="Outcome"
             type="down"
-            onPress={() => handleTransactionsTypeSelect('down')}
-            isActive={transactionType === 'down'}
+            onPress={() => handleTransactionsTypeSelect('negative')}
+            isActive={transactionType === 'negative'}
           />
           </TransactionTypes>
 
