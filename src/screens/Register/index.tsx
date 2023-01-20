@@ -57,9 +57,7 @@ const Register = () => {
     try {
       const datakey = '@gofinances:transactions';
       const data = await AsyncStorage.getItem(datakey)
-      console.log("data", data)
       const currentData = data ? JSON.parse(data) : []
-      console.log("currentdata", currentData)
 
       const formattedData = [
         ...currentData,
