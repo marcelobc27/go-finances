@@ -3,9 +3,6 @@ import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 
-import Dashboard from './src/screens/Dashboard';
-import Register from './src/screens/Register';
-
 import { ThemeProvider } from 'styled-components/native';
 import theme from './src/global/styles/theme';
 import {
@@ -16,6 +13,8 @@ import {
 } from '@expo-google-fonts/poppins'
 import AppLoading from 'expo-app-loading';
 import AppRoutes from './src/routes/app.routes';
+
+import Signin from './src/screens/signin';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -31,7 +30,9 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <NavigationContainer>
         <StatusBar barStyle='light-content'/>
-        <AppRoutes/>
+
+        <Signin/>
+        {/* <AppRoutes/> */}
       </NavigationContainer>
     </ThemeProvider>
   );
