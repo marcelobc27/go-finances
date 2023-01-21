@@ -1,4 +1,6 @@
+import { useContext } from "react"
 import SignInSocialButton from "../../components/signInSocialButton"
+import { useAuth } from "../../hooks/auth"
 import { 
   Container,
   Header,
@@ -12,6 +14,8 @@ import {
 } from "./styled"
 
 const SignIn = () => {
+  const { user } = useAuth()
+  console.log(user)
   return(
     <Container>
       <Header>
