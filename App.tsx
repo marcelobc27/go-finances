@@ -33,8 +33,8 @@ export default function App() {
         <StatusBar barStyle='light-content'/>
         <AuthProvider>
           <Signin/>
-        </AuthProvider>
         {/* <AppRoutes/> */}
+        </AuthProvider>
       </NavigationContainer>
     </ThemeProvider>
   );

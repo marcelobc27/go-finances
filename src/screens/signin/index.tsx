@@ -1,5 +1,6 @@
 import { useContext } from "react"
 import SignInSocialButton from "../../components/signInSocialButton"
+import { useTheme } from "styled-components/native"
 import { useAuth } from "../../hooks/auth"
 import { 
   Container,
@@ -15,6 +16,7 @@ import {
 
 const SignIn = () => {
   const { user } = useAuth()
+  const theme = useTheme()
   console.log(user)
   return(
     <Container>
@@ -35,8 +37,8 @@ const SignIn = () => {
       </Header>
       <Footer>
         <FooterWrapper>
-          <SignInSocialButton color="blue" title="Entrar com Google" icon="google"></SignInSocialButton>
-          <SignInSocialButton color="black" title="Entrar com Apple" icon="apple"></SignInSocialButton>
+          <SignInSocialButton color={theme.colors.primary} title="Entrar com Google" icon="google"></SignInSocialButton>
+          <SignInSocialButton color={theme.colors.text_dark} title="Entrar com Apple" icon="apple"></SignInSocialButton>
         </FooterWrapper>
       </Footer>
 

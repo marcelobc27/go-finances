@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { RFValue } from "react-native-responsive-fontsize";
 import HighlightCard from "../../components/HighlightCard";
 import TransactionCard, { TransactionCardProps } from "../../components/TransactionCard";
+import { useTheme } from "styled-components/native";
 import {
   Container,
   Header,
@@ -64,6 +65,7 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [transactions, setTransactions] = useState<DataListProps[]>()
   const [highlightedData, setHighlightedData] = useState(highlightedDataInitialState)
+  const theme = useTheme()
   
   async function loadTransactions(){
     const datakey = '@gofinances:transactions';
@@ -152,7 +154,7 @@ const Dashboard = () => {
         ? 
         <LoadContainer>
           <ActivityIndicator 
-            color="#5636D3"
+            color={theme.colors.primary}
             size="large"
           /> 
         </LoadContainer> 

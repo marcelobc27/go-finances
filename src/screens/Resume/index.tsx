@@ -6,6 +6,7 @@ import { RFValue } from 'react-native-responsive-fontsize'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
 import { addMonths, format, subMonths } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { useTheme } from 'styled-components/native'
 
 import { 
   Container, 
@@ -49,6 +50,7 @@ const Resume = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([])
+  const theme = useTheme()
 
   function handleDateChange(action: 'next' | 'prev'){
     if(action === 'next'){
@@ -126,7 +128,7 @@ const Resume = () => {
         isLoading ? 
         <LoadContainer>
         <ActivityIndicator 
-          color="#5636D3"
+          color={theme.colors.primary}
           size="large"
         /> 
       </LoadContainer> 
