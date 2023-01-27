@@ -1,4 +1,5 @@
 import { useContext } from "react"
+import { Button } from "react-native"
 import SignInSocialButton from "../../components/signInSocialButton"
 import { useTheme } from "styled-components/native"
 import { useAuth } from "../../hooks/auth"
@@ -15,9 +16,17 @@ import {
 } from "./styled"
 
 const SignIn = () => {
-  const { user } = useAuth()
   const theme = useTheme()
-  console.log(user)
+  const { promptAsync } = useAuth()
+
+  // function handleSignInWithGoogle(){
+  //   try{
+  //     SignInWithGoogle()
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
   return(
     <Container>
       <Header>
@@ -37,7 +46,7 @@ const SignIn = () => {
       </Header>
       <Footer>
         <FooterWrapper>
-          <SignInSocialButton color={theme.colors.primary} title="Entrar com Google" icon="google"></SignInSocialButton>
+          <SignInSocialButton color={theme.colors.primary} onPress={() => promptAsync()}  title="Entrar com Google" icon="google"></SignInSocialButton>
           <SignInSocialButton color={theme.colors.text_dark} title="Entrar com Apple" icon="apple"></SignInSocialButton>
         </FooterWrapper>
       </Footer>

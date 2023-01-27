@@ -10,11 +10,12 @@ interface Props extends TouchableOpacityProps {
   title: string;
   icon: string;
   color: string;
+  onPress: ()=>{};
 }
 
-const SignInSocialButton = ({title, icon, color, ...rest} : Props) => {
+const SignInSocialButton = ({title, icon, color, onPress, ...rest} : Props) => {
   return(
-    <Button activeOpacity={0.5}>
+    <Button activeOpacity={0.5} onPress={onPress}>
       <ImageContainer>
         <ButtonIcon name={icon} color={color}/>
       </ImageContainer>

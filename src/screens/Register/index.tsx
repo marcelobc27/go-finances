@@ -10,6 +10,7 @@ import { Modal } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import uuid from 'react-native-uuid'
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../../hooks/auth";
 
 const Register = () => {
   const [transactionType, setTransactionType] = useState('')
@@ -18,6 +19,8 @@ const Register = () => {
     key: "category",
     name: "Categoria",
   })
+
+  const { user } = useAuth()
   
   const navigation = useNavigation()
 
@@ -55,7 +58,7 @@ const Register = () => {
     }
 
     try {
-      const datakey = '@gofinances:transactions';
+      const datakey = `@gofinances:transactions_user:${user.id}`;
       const data = await AsyncStorage.getItem(datakey)
       const currentData = data ? JSON.parse(data) : []
 

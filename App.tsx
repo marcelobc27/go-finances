@@ -14,8 +14,9 @@ import {
 import AppLoading from 'expo-app-loading';
 import AppRoutes from './src/routes/app.routes';
 
-import Signin from './src/screens/signin';
+import Signin from './src/screens/SignIn';
 import { AuthProvider } from './src/hooks/auth';
+import Routes from './src/routes';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -29,13 +30,10 @@ export default function App() {
   }
   return (
     <ThemeProvider theme={theme}>
-      <NavigationContainer>
         <StatusBar barStyle='light-content'/>
         <AuthProvider>
-          <Signin/>
-        {/* <AppRoutes/> */}
+          <Routes/>
         </AuthProvider>
-      </NavigationContainer>
     </ThemeProvider>
   );
 }
