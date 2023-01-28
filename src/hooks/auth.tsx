@@ -3,6 +3,7 @@ import * as WebBrowser from 'expo-web-browser';
 import * as Google  from 'expo-auth-session/providers/google'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwtDecode from "jwt-decode";
+import { GOOGLE_WEB_CREDENTIAL } from "../utils/credentials";
 
 interface AuthProviderProps {
   children: ReactNode,
@@ -27,11 +28,12 @@ WebBrowser.maybeCompleteAuthSession();
 
 function AuthProvider({children} : AuthProviderProps) {
   const [user, setUser] = useState<User>({} as User)
+  const [userStorageLoading, setUserStorageLoading] = useState(true)
 
   const userStorageKey = '@gofinances:user';
 
   const [ request, response, promptAsync ] = Google.useIdTokenAuthRequest({
-    webClientId: '132194061982-gjddhk11rtsotaqd8ejs4f92hn84t5u4.apps.googleusercontent.com',
+    webClientId: GOOGLE_WEB_CREDENTIAL,
     scopes: ['profile', 'email']
   })
 
@@ -57,6 +59,20 @@ function AuthProvider({children} : AuthProviderProps) {
     setUser({} as User)
     AsyncStorage.removeItem(userStorageKey)
   }
+
+  useEffect(() => {
+    async function loadUserStorageData(){
+      const userStoraged = await AsyncStorage.getItem(userStorageKey);
+
+      if(userStorageKey){
+        const userLogged = JSON.parse(userStoraged) as User;
+        setUser(userLogged)
+      }
+      setUserStorageLoading(false)
+    }
+
+    loadUserStorageData()
+  }, [])
 
   return (
     <AuthContext.Provider value={{ user, promptAsync, signOut }}>
